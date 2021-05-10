@@ -1,0 +1,30 @@
+{
+  "name": "sound",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "midi-player-js": "^2.0.14",
+    "npm-watch": "^0.9.0",
+    "sassify": "^4.0.1",
+    "tone": "^14.7.77",
+    "uglify-js": "^3.13.5"
+  },
+  "watch": {
+    "build": {
+      "patterns": "*",
+      "legacyWatch": false,
+      "extensions": "js,json,scss",
+      "quiet": true,
+      "runOnChangeOnly": true
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t sassify Main.js | uglifyjs -o bundle/bundle.js",
+    "watch": "npm-watch"
+  },
+  "author": "Gael Hugo",
+  "license": "ISC"
+}

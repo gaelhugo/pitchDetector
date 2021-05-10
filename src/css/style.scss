@@ -1,0 +1,183 @@
+$input-h: 2em;
+
+$track-h: 1em;
+$track-v: 32 64 125 250 500 1k 2k 4k 8k 16k;
+$len: length($track-v);
+
+$thumb-d: 1.5em;
+
+@mixin track() {
+  border: none;
+  height: $track-h;
+  border-radius: $track-h/2;
+  box-shadow: inset -0.125em 0.125em 0.125em #1c1c1c, inset 1px -1px 1px #4a4a4a;
+  background: #383330;
+}
+
+@mixin thumb() {
+  border: none;
+  width: $thumb-d;
+  height: $thumb-d;
+  border-radius: 50%;
+  background: radial-gradient(#{at 80% 50%}, #777, rgba(#777, 0) 70%) no-repeat
+      100% 50%,
+    radial-gradient(#{at 50% 50%}, #777, rgba(#777, 0) 70%) no-repeat -65% 90%,
+    radial-gradient(rgba(#fff, 0) 32%, #fff 35%),
+    linear-gradient(90deg, #838383, #292828) no-repeat 50% 50%;
+  /*linear-gradient(90deg, #f0984d, #bf7145) no-repeat 50% 50%;*/
+  background-size: 35% 65%, 65% 65%, 100% 100%, 65% 65%;
+}
+
+#interface {
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  top: 0px;
+}
+
+#interface {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+  background: url(https://i.imgur.com/vRXJ21l.png),
+    radial-gradient(rgb(194, 180, 144), rgb(151, 136, 107));
+  /*radial-gradient(#3a3b3f, #313236);*/
+}
+
+section {
+  align-self: center;
+  width: 15em;
+  height: 2em;
+  transform: rotate(-90deg);
+  background: linear-gradient(
+      -90deg,
+      #c2b490 1px,
+      #97886b 1px,
+      #5f5a4f 2px,
+      transparent 2px
+    )
+    (15em/2 + 0.125em/2) 0;
+  background-size: 1em 1px;
+  font: 1em/2 verdana, sans-serif;
+  text-align: center;
+
+  label {
+    position: absolute;
+    transform-origin: center center;
+    transform: rotate(90deg) translateY(11em);
+    color: #5f5a4f;
+    // text-shadow: 0 0.75px #d3cfc7;
+  }
+
+  &:nth-of-type(1) {
+    height: 2em;
+
+    // input[type="range"] /deep/ #track:before {
+    //   content: "Pre-Amp.";
+    // }
+    label {
+      position: absolute;
+      transform: rotate(90deg) translateY(12.5em);
+    }
+  }
+  &:nth-of-type(2) {
+    position: relative;
+    height: 2em;
+
+    label {
+      position: absolute;
+      transform: rotate(90deg) translateY(12.5em);
+    }
+
+    &:before {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      width: 3em;
+      transform: translate(-50%, 50%) rotate(90deg) translate(-70%);
+      color: #676672;
+      font-size: 0.8em;
+      font-weight: 600;
+      line-height: 8.75;
+      text-align: right;
+      text-indent: -0.25em;
+      text-shadow: 0 -1px #000;
+      //   content: "+12dB 0dB -12dB";
+    }
+
+    @for $i from 1 through $len {
+      input[type="range"]:nth-of-type(#{$i}) /deep/ #track:before {
+        content: "#{nth($track-v, $i)}";
+      }
+    }
+  }
+}
+
+input[type="range"] {
+  &,
+  &::-webkit-slider-runnable-track,
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+
+  display: block;
+  margin: 0 auto;
+  border: none;
+  padding: 0;
+  width: 14.5em;
+  height: 2em;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+
+  /* slider components */
+  &::-webkit-slider-runnable-track {
+    @include track();
+  }
+  &::-moz-range-track {
+    @include track();
+  }
+  &::-ms-track {
+    @include track();
+    color: transparent;
+  }
+  &::-ms-fill-lower,
+  &::-ms-fill-upper,
+  &::-ms-tooltip {
+    display: none;
+  }
+
+  &::-webkit-slider-thumb {
+    margin-top: ($track-h - $thumb-d)/2;
+    @include thumb();
+  }
+  &::-moz-range-thumb {
+    @include thumb();
+  }
+  &::-ms-thumb {
+    @include thumb();
+  }
+
+  /deep/ #track {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      top: ($track-h - $input-h)/2;
+      right: 100%;
+      transform: translate(50%) rotate(90deg) translate(0, 50%) scale(0.8);
+      color: #676672;
+      font-weight: 900;
+      text-shadow: 0 -1px #000;
+      white-space: nowrap;
+      font: 1em/2 verdana, sans-serif;
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    background-color: rgba(#000, 0.1);
+  }
+}
